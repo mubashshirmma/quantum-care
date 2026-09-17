@@ -1,0 +1,46 @@
+[
+  {
+    "name": "breast_cancer_wisconsin",
+    "display_name": "Breast Cancer (Wisconsin, mean features)",
+    "path": "datasets/breast_cancer_wisconsin/breast_cancer_wisconsin.csv",
+    "numeric_features": [
+      "mean_radius",
+      "mean_texture",
+      "mean_perimeter",
+      "mean_area",
+      "mean_smoothness",
+      "mean_compactness",
+      "mean_concavity",
+      "mean_concave_points",
+      "mean_symmetry",
+      "mean_fractal_dimension"
+    ],
+    "categorical_features": [],
+    "target_column": "target",
+    "target_rule": {
+      "type": "positive_values",
+      "values": [
+        "0"
+      ]
+    },
+    "target_meaning": {
+      "0": "benign",
+      "1": "malignant"
+    },
+    "target_documented": true,
+    "category": "cancer",
+    "has_header": true,
+    "columns": null,
+    "na_values": [
+      "?",
+      "NA",
+      "N/A"
+    ],
+    "source": "sklearn load_breast_cancer",
+    "notes": "1 = malignant",
+    "builtin": false,
+    "target_rule_text": "label = 1 if raw in ['0'] else 0",
+    "icon": "🎗️",
+    "category_label": "Cancer"
+  }
+]

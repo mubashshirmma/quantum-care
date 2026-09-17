@@ -1,0 +1,15 @@
+fastapi==0.141.1
+httpx==0.28.1
+joblib==1.6.0
+numpy==2.5.2
+pandas==3.0.5
+pillow==12.3.0
+pypdfium2==5.13.0
+python-multipart==0.0.32
+qiskit-aer==0.17.2
+qiskit-machine-learning==0.9.1
+qiskit==2.5.2
+scikit-learn==1.9.0
+scipy==1.18.1
+uvicorn==0.52.4
+xgboost==3.4.1

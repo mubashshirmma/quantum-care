@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>QuantumCare · Hybrid Quantum Health Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="/static/css/style.css?v=0.5">
+</head>
+<body>
+<div class="login-wrap" id="login" hidden>
+  <div class="login-card"><div class="qmotif" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="brand" style="padding-bottom:10px"><div class="logo"><span data-icon="atom" data-size="22"></span><i class="orbit"></i></div><div><div class="brand-name">QuantumCare</div><div class="brand-sub">Hybrid Quantum Health Intelligence · Research prototype</div></div></div>
+    <h2>Operator sign in</h2>
+    <p class="muted">Patient records contain sensitive information. Sign in to continue.</p>
+    <div class="warnbox" id="login-devnote" hidden>Development credentials are active (<b>admin</b> / <b>admin123</b>). Set <code>APP_ADMIN_USER</code> and <code>APP_ADMIN_PASSWORD</code> before any real use.</div>
+    <form id="login-form">
+      <label>Username <input id="login-user" autocomplete="username" required></label>
+      <label>Password <input id="login-pass" type="password" autocomplete="current-password" required></label>
+      <div class="error" id="login-err" hidden></div>
+      <button class="btn primary block lg" type="submit" style="margin-top:14px">Sign in</button>
+    </form>
+    <p class="tiny" style="margin-top:14px">Patient information and model outputs are intended for authorized research and decision-support use. This system is not a substitute for professional medical diagnosis.</p>
+  </div>
+</div>
+
+<div class="shell" id="shell" hidden>
+  <aside class="sidebar" id="sidebar">
+    <div class="brand"><div class="logo"><span data-icon="atom" data-size="22"></span><i class="orbit"></i></div><div><div class="brand-name">QuantumCare</div><div class="brand-sub">Hybrid Quantum Health Intelligence</div></div></div>
+    <nav class="nav" id="nav">
+      <a href="#/dashboard" data-route="dashboard"><span class="ic" data-icon="grid"></span> Dashboard</a>
+      <div class="grp"><a href="#/analysis" data-route="analysis"><span class="ic" data-icon="stethoscope"></span> Patient Analysis</a>
+        <div class="sub"><a href="#/analysis?mode=new">New Patient</a><a href="#/analysis?mode=existing">Existing Patient</a><a href="#/analysis?mode=manual">Manual Entry</a><a href="#/analysis?mode=ocr">NVIDIA OCR</a></div></div>
+      <div class="grp"><a href="#/records" data-route="records"><span class="ic" data-icon="folder"></span> Patient Records</a>
+        <div class="sub"><a href="#/records?tab=search">Search</a><a href="#/records?tab=list">Patient List</a><a href="#/records?tab=history">Analysis History</a></div></div>
+      <div class="grp"><a href="#/models" data-route="models"><span class="ic" data-icon="dna"></span> Models &amp; Datasets</a>
+        <div class="sub"><a href="#/models?tab=upload">CSV Upload</a><a href="#/models?tab=explorer">Dataset Explorer</a><a href="#/models?tab=preprocessing">Preprocessing</a><a href="#/models?tab=models">Models</a></div></div>
+      <div class="grp"><a href="#/benchmark" data-route="benchmark"><span class="ic" data-icon="chart"></span> Benchmark</a>
+        <div class="sub"><a href="#/benchmark?view=table">Classical vs Quantum</a><a href="#/benchmark?view=metrics">Metrics</a><a href="#/benchmark?view=roc">ROC</a><a href="#/benchmark?view=cm">Confusion Matrix</a></div></div>
+      <div class="grp"><a href="#/quantum" data-route="quantum"><span class="ic" data-icon="atom"></span> Quantum Lab</a>
+        <div class="sub"><a href="#/quantum?view=models">Quantum Models</a><a href="#/quantum?view=circuit">Circuit</a><a href="#/quantum?view=config">Configuration</a></div></div>
+      <a href="#/settings" data-route="settings" style="margin-top:8px"><span class="ic" data-icon="settings"></span> Settings</a>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="userbox"><span id="user-name" class="who"><span data-icon="user" data-size="16"></span> —</span><button class="btn ghost sm" id="btn-logout" title="Sign out"><span data-icon="logout" data-size="15"></span> Sign out</button></div>
+      <span class="pill" id="env-pill">connecting…</span>
+      <p class="tiny">Research &amp; decision-support only. Not a medical device.</p>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="btn ghost menu-btn" id="menu-btn" aria-label="menu">☰</button>
+      <h1 id="page-title">Dashboard</h1>
+      <div class="topbar-actions"><a class="btn primary sm" href="#/analysis"><span data-icon="plus" data-size="16"></span> New Analysis</a></div>
+    </header>
+    <div class="devbar" id="devbar" hidden></div>
+    <section class="page" data-page="dashboard" hidden></section>
+    <section class="page" data-page="analysis" hidden></section>
+    <section class="page" data-page="records" hidden></section>
+    <section class="page" data-page="models" hidden>
+      <div class="subnav" id="models-subnav"></div>
+      <div id="models-body"></div>
+      <div class="two-col" id="ds-layout" hidden>
+        <div class="panel">
+          <div class="panel-head">
+            <div><h2>Datasets by disease</h2><p class="muted">Research workspace: upload, define target, train. Separate from patient prediction.</p></div>
+            <button class="btn primary" id="btn-add">➕ Add New Dataset</button>
+          </div>
+          <div id="categories"></div>
+        </div>
+        <aside class="panel detail" id="detail" hidden>
+          <div class="panel-head"><h2 id="d-title">—</h2><button class="btn ghost" id="d-close">✕</button></div>
+          <div id="d-body"></div>
+        </aside>
+      </div>
+    </section>
+    <section class="page" data-page="benchmark" hidden></section>
+    <section class="page" data-page="quantum" hidden></section>
+    <section class="page" data-page="settings" hidden></section>
+  </div>
+</div>
+
+<!-- Add dataset wizard -->
+<div class="modal-backdrop" id="modal" hidden>
+  <div class="modal">
+    <div class="panel-head"><h2>Add New Dataset</h2><button class="btn ghost" id="m-close">✕</button></div>
+    <ol class="steps"><li data-step="1" class="active">Upload CSV</li><li data-step="2">Define columns &amp; target</li><li data-step="3">Confirm</li></ol>
+    <div class="step" data-step="1">
+      <p class="hint">CSV with a header row. One column must hold the label (disease present/absent). Other columns become patient features.</p>
+      <label class="drop" id="drop"><input type="file" id="file" accept=".csv,text/csv" hidden><span id="drop-text">Click to choose a CSV file</span></label>
+      <div class="actions"><button class="btn primary" id="s1-next" disabled>Inspect columns →</button></div>
+    </div>
+    <div class="step" data-step="2" hidden>
+      <div class="grid2">
+        <label>Disease name <input id="f-display" placeholder="e.g. Diabetes (Pima Indians)"></label>
+        <label>Identifier <input id="f-name" placeholder="diabetes_pima" pattern="[a-z][a-z0-9_]{2,63}"></label>
+        <label>Category <select id="f-category"></select></label>
+        <label>Source / provenance <input id="f-source" placeholder="URL or description"></label>
+      </div>
+      <h3>Columns <span class="muted" id="col-summary"></span></h3>
+      <div class="tablewrap"><table class="cols"><thead><tr><th>Column</th><th>dtype</th><th>unique</th><th>missing</th><th>sample values</th><th>Role</th></tr></thead><tbody id="cols"></tbody></table></div>
+      <h3>Target definition</h3>
+      <div class="target-box" id="target-box"><p class="muted">Select exactly one column with role <b>Target</b> above.</p></div>
+      <div class="grid2"><label>Meaning of 0 <input id="f-m0" placeholder="disease absent"></label><label>Meaning of 1 <input id="f-m1" placeholder="disease present"></label></div>
+      <label class="check"><input type="checkbox" id="f-documented"> The target meaning is documented by the dataset source (untick if this is an assumption)</label>
+      <label>Notes <textarea id="f-notes" rows="2" placeholder="anything a future user must know about this data"></textarea></label>
+      <div class="actions"><button class="btn" id="s2-back">← Back</button><button class="btn primary" id="s2-next">Review →</button></div>
+    </div>
+    <div class="step" data-step="3" hidden>
+      <pre id="review" class="review"></pre>
+      <div class="actions"><button class="btn" id="s3-back">← Back</button><button class="btn primary" id="s3-submit">Register dataset</button></div>
+    </div>
+    <div class="error" id="m-error" hidden></div>
+  </div>
+</div>
+
+<div class="modal-backdrop center" id="analyzing" hidden>
+  <div class="analyzing glass">
+    <div class="spinner"></div>
+    <div class="an-title">Analyzing patient…</div>
+    <ol class="an-steps" id="an-steps"><li>Processing data…</li><li>Running trained models…</li><li>Generating prediction…</li></ol>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+<script src="/static/js/icons.js?v=0.5"></script>
+<script src="/static/js/app.js?v=0.5"></script>
+<script src="/static/js/patient.js?v=0.5"></script>
+</body>
+</html>

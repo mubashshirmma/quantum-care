@@ -1,0 +1,175 @@
+{
+  "disease": "breast_cancer_wisconsin",
+  "timestamp_utc": "2026-09-04T14:23:39+00:00",
+  "dataset": {
+    "name": "breast_cancer_wisconsin",
+    "display_name": "Breast Cancer (Wisconsin, mean features)",
+    "category": "cancer",
+    "dataset_file": "breast_cancer_wisconsin.csv",
+    "numeric_features": [
+      "mean_radius",
+      "mean_texture",
+      "mean_perimeter",
+      "mean_area",
+      "mean_smoothness",
+      "mean_compactness",
+      "mean_concavity",
+      "mean_concave_points",
+      "mean_symmetry",
+      "mean_fractal_dimension"
+    ],
+    "categorical_features": [],
+    "target_column": "target",
+    "target_rule": {
+      "type": "positive_values",
+      "values": [
+        "0"
+      ]
+    },
+    "target_rule_text": "label = 1 if raw in ['0'] else 0",
+    "target_meaning": {
+      "0": "benign",
+      "1": "malignant"
+    },
+    "target_documented": true,
+    "source": "sklearn load_breast_cancer",
+    "notes": "1 = malignant"
+  },
+  "split": {
+    "strategy": "stratified_holdout",
+    "test_size": 0.2,
+    "seed": 42,
+    "n_train": 455,
+    "n_test": 114,
+    "train_positives": 170,
+    "test_positives": 42
+  },
+  "preprocessing": {
+    "numeric": "median impute + StandardScaler",
+    "categorical": "most_frequent impute + OneHot(drop_if_binary)",
+    "n_features_after_preprocessing": 10
+  },
+  "quantum_config": {
+    "n_qubits": 4,
+    "feature_map": "angle",
+    "ansatz": "real_amplitudes",
+    "reps": 1,
+    "entanglement": "linear",
+    "observable": "ZZZZ",
+    "n_trainable_params": 8,
+    "circuit_depth": 6,
+    "optimizer": "cobyla",
+    "maxiter": 40,
+    "backend": "StatevectorEstimator (exact, noiseless)",
+    "feature_reduction": "PCA 10->4",
+    "angle_scaling": "MinMax to [0, pi], fitted on train, clipped on test"
+  },
+  "results": {
+    "logistic_regression": {
+      "accuracy": 0.9298,
+      "precision": 0.8864,
+      "recall": 0.9286,
+      "specificity": 0.9306,
+      "f1": 0.907,
+      "roc_auc": 0.9841,
+      "confusion_matrix": {
+        "tn": 67,
+        "fp": 5,
+        "fn": 3,
+        "tp": 39
+      },
+      "n_test": 114
+    },
+    "random_forest": {
+      "accuracy": 0.9386,
+      "precision": 0.9268,
+      "recall": 0.9048,
+      "specificity": 0.9583,
+      "f1": 0.9157,
+      "roc_auc": 0.9868,
+      "confusion_matrix": {
+        "tn": 69,
+        "fp": 3,
+        "fn": 4,
+        "tp": 38
+      },
+      "n_test": 114
+    },
+    "svm_rbf": {
+      "accuracy": 0.9561,
+      "precision": 0.9744,
+      "recall": 0.9048,
+      "specificity": 0.9861,
+      "f1": 0.9383,
+      "roc_auc": 0.9828,
+      "confusion_matrix": {
+        "tn": 71,
+        "fp": 1,
+        "fn": 4,
+        "tp": 38
+      },
+      "n_test": 114
+    },
+    "xgboost": {
+      "accuracy": 0.9474,
+      "precision": 0.9286,
+      "recall": 0.9286,
+      "specificity": 0.9583,
+      "f1": 0.9286,
+      "roc_auc": 0.9772,
+      "confusion_matrix": {
+        "tn": 69,
+        "fp": 3,
+        "fn": 3,
+        "tp": 39
+      },
+      "n_test": 114
+    },
+    "quantum_vqc": {
+      "accuracy": 0.807,
+      "precision": 0.7941,
+      "recall": 0.6429,
+      "specificity": 0.9028,
+      "f1": 0.7105,
+      "roc_auc": 0.8856,
+      "confusion_matrix": {
+        "tn": 65,
+        "fp": 7,
+        "fn": 15,
+        "tp": 27
+      },
+      "n_test": 114
+    }
+  },
+  "training_info": {
+    "logistic_regression": {
+      "train_time_s": 0.031,
+      "train_accuracy": 0.9407
+    },
+    "random_forest": {
+      "train_time_s": 0.665,
+      "train_accuracy": 1.0
+    },
+    "svm_rbf": {
+      "train_time_s": 0.015,
+      "train_accuracy": 0.9582
+    },
+    "xgboost": {
+      "train_time_s": 2.482,
+      "train_accuracy": 1.0
+    },
+    "quantum_vqc": {
+      "train_time_s": 17.1,
+      "train_accuracy": 0.8505,
+      "final_train_loss": 0.5727,
+      "optimizer_evaluations": 40
+    }
+  },
+  "environment": {
+    "python": "3.12.8",
+    "qiskit": "2.5.2",
+    "qiskit_machine_learning": "0.9.1",
+    "sklearn": "1.9.0"
+  },
+  "disclaimer": "Research prototype. Not a medical device. Not clinically validated."
+}

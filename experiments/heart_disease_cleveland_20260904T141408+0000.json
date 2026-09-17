@@ -1,0 +1,171 @@
+{
+  "disease": "heart_disease_cleveland",
+  "timestamp_utc": "2026-09-04T14:14:08+00:00",
+  "dataset": {
+    "name": "heart_disease_cleveland",
+    "display_name": "Heart Disease (UCI Cleveland)",
+    "dataset_file": "processed.cleveland.data",
+    "numeric_features": [
+      "age",
+      "trestbps",
+      "chol",
+      "thalach",
+      "oldpeak",
+      "ca"
+    ],
+    "categorical_features": [
+      "sex",
+      "cp",
+      "fbs",
+      "restecg",
+      "exang",
+      "slope",
+      "thal"
+    ],
+    "target_column": "num",
+    "target_meaning": {
+      "0": "disease absent (<50% diameter narrowing)",
+      "1": "disease present (>50% diameter narrowing)"
+    },
+    "target_documented": true,
+    "source": "https://archive.ics.uci.edu/dataset/45/heart+disease",
+    "notes": "303 rows. 'ca' and 'thal' contain 6 missing values encoded as '?'. Binarisation num>0 follows the dataset's own documentation."
+  },
+  "split": {
+    "strategy": "stratified_holdout",
+    "test_size": 0.2,
+    "seed": 42,
+    "n_train": 242,
+    "n_test": 61,
+    "train_positives": 111,
+    "test_positives": 28
+  },
+  "preprocessing": {
+    "numeric": "median impute + StandardScaler",
+    "categorical": "most_frequent impute + OneHot(drop_if_binary)",
+    "n_features_after_preprocessing": 22
+  },
+  "quantum_config": {
+    "n_qubits": 4,
+    "feature_map": "angle",
+    "ansatz": "real_amplitudes",
+    "reps": 1,
+    "entanglement": "linear",
+    "observable": "ZZZZ",
+    "n_trainable_params": 8,
+    "circuit_depth": 6,
+    "optimizer": "cobyla",
+    "maxiter": 150,
+    "backend": "StatevectorEstimator (exact, noiseless)",
+    "feature_reduction": "PCA 22->4",
+    "angle_scaling": "MinMax to [0, pi], fitted on train, clipped on test"
+  },
+  "results": {
+    "logistic_regression": {
+      "accuracy": 0.8689,
+      "precision": 0.8125,
+      "recall": 0.9286,
+      "specificity": 0.8182,
+      "f1": 0.8667,
+      "roc_auc": 0.9578,
+      "confusion_matrix": {
+        "tn": 27,
+        "fp": 6,
+        "fn": 2,
+        "tp": 26
+      },
+      "n_test": 61
+    },
+    "random_forest": {
+      "accuracy": 0.8689,
+      "precision": 0.8125,
+      "recall": 0.9286,
+      "specificity": 0.8182,
+      "f1": 0.8667,
+      "roc_auc": 0.9383,
+      "confusion_matrix": {
+        "tn": 27,
+        "fp": 6,
+        "fn": 2,
+        "tp": 26
+      },
+      "n_test": 61
+    },
+    "svm_rbf": {
+      "accuracy": 0.918,
+      "precision": 0.8966,
+      "recall": 0.9286,
+      "specificity": 0.9091,
+      "f1": 0.9123,
+      "roc_auc": 0.96,
+      "confusion_matrix": {
+        "tn": 30,
+        "fp": 3,
+        "fn": 2,
+        "tp": 26
+      },
+      "n_test": 61
+    },
+    "xgboost": {
+      "accuracy": 0.8852,
+      "precision": 0.8387,
+      "recall": 0.9286,
+      "specificity": 0.8485,
+      "f1": 0.8814,
+      "roc_auc": 0.9491,
+      "confusion_matrix": {
+        "tn": 28,
+        "fp": 5,
+        "fn": 2,
+        "tp": 26
+      },
+      "n_test": 61
+    },
+    "quantum_vqc": {
+      "accuracy": 0.8525,
+      "precision": 0.8276,
+      "recall": 0.8571,
+      "specificity": 0.8485,
+      "f1": 0.8421,
+      "roc_auc": 0.9372,
+      "confusion_matrix": {
+        "tn": 28,
+        "fp": 5,
+        "fn": 4,
+        "tp": 24
+      },
+      "n_test": 61
+    }
+  },
+  "training_info": {
+    "logistic_regression": {
+      "train_time_s": 0.075,
+      "train_accuracy": 0.8595
+    },
+    "random_forest": {
+      "train_time_s": 0.66,
+      "train_accuracy": 1.0
+    },
+    "svm_rbf": {
+      "train_time_s": 0.021,
+      "train_accuracy": 0.9008
+    },
+    "xgboost": {
+      "train_time_s": 2.425,
+      "train_accuracy": 0.9959
+    },
+    "quantum_vqc": {
+      "train_time_s": 32.703,
+      "train_accuracy": 0.7521,
+      "final_train_loss": 0.6338,
+      "optimizer_evaluations": 150
+    }
+  },
+  "environment": {
+    "python": "3.12.8",
+    "qiskit": "2.5.2",
+    "qiskit_machine_learning": "0.9.1",
+    "sklearn": "1.9.0"
+  },
+  "disclaimer": "Research prototype. Not a medical device. Not clinically validated."
+}
