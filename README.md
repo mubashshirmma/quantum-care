@@ -82,15 +82,15 @@ Two workflows sit side by side in the same application:
 
 | | Feature | What it does |
 |---|---|---|
-| ⚖️ | **Fair 8-model benchmark** | 4 classical + 4 quantum models, identical split, identical preprocessing, identical metrics. |
-| ⚛️ | **Four different quantum models** | Not one token circuit — a VQC, a quantum-kernel SVM, a hierarchical block model, and a data re-uploading model. |
-| 🔒 | **Leakage-safe by construction** | Preprocessing lives *inside* the scikit-learn Pipeline, so it can only ever be fitted on training data. |
-| 🚀 | **Custom fast simulator** | A vectorised statevector engine for RY/CX circuits, verified equal to Qiskit's own simulator to **1e-10**. |
-| 📄 | **NVIDIA OCR intake** | Upload a lab report (JPG/PNG/PDF); values are extracted and mapped onto the model's input fields for human confirmation. |
-| 👤 | **Patient records + email OTP** | Patients are registered once with a verified email, then reused across many analyses. |
-| 🧠 | **Honest explainability** | Exact per-patient contributions where the model supports it, and an explicit "not available" where it does not. |
-| 📚 | **Password-protected formula section** | Every formula used in the project, tagged *implemented* or *theoretical*, with a worked example on real saved numbers. |
-| 🧪 | **53 automated tests** | Including a test that the quantum simulator matches Qiskit, and that analytic gradients match finite differences. |
+| ⚖️ 1. | **Fair 8-model benchmark** | 4 classical + 4 quantum models, identical split, identical preprocessing, identical metrics. |
+| ⚛️ 2. | **Four different quantum models** | Not one token circuit — a VQC, a quantum-kernel SVM, a hierarchical block model, and a data re-uploading model. |
+| 🔒 3. | **Leakage-safe by construction** | Preprocessing lives *inside* the scikit-learn Pipeline, so it can only ever be fitted on training data. |
+| 💨 4. | **Custom fast simulator** | A vectorised statevector engine for RY/CX circuits, verified equal to Qiskit's own simulator to **1e-10**. |
+| 📄 5. | **NVIDIA OCR intake** | Upload a lab report (JPG/PNG/PDF); values are extracted and mapped onto the model's input fields for human confirmation. |
+| 👤 6. | **Patient records + email OTP** | Patients are registered once with a verified email, then reused across many analyses. |
+| 🧠 7. | **Honest explainability** | Exact per-patient contributions where the model supports it, and an explicit "not available" where it does not. |
+| 📚 8. | **Password-protected formula section** | Every formula used in the project, tagged *implemented* or *theoretical*, with a worked example on real saved numbers. |
+| 🧪 9. | **53 automated tests** | Including a test that the quantum simulator matches Qiskit, and that analytic gradients match finite differences. |
 
 ---
 
