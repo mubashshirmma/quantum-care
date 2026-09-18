@@ -98,10 +98,34 @@ def _parse_number(v: str):
     return float(m.group(0)) if m else None
 
 
+# A real OCR engine returns each text box as its own detection, so a two-column report line
+# ("Age:" in the label column, "63 years" in the value column) arrives as TWO lines, not one.
+# Detections are already sorted top-to-bottom then left-to-right, so the value is the next line.
+_LABEL_ONLY = re.compile(r"^\s*[A-Za-z][A-Za-z0-9 .()/-]{0,40}\s*[:=]\s*$")
+
+
+def _join_split_label_lines(lines: list[dict]) -> list[dict]:
+    """Merge a line that is only a label ending in ':' with the line holding its value."""
+    out: list[dict] = []
+    i = 0
+    while i < len(lines):
+        text = (lines[i].get("text") or "").strip()
+        nxt = (lines[i + 1].get("text") or "").strip() if i + 1 < len(lines) else ""
+        if text and nxt and _LABEL_ONLY.match(text) and not _LABEL_ONLY.match(nxt):
+            ca, cb = lines[i].get("confidence"), lines[i + 1].get("confidence")
+            confs = [c for c in (ca, cb) if c is not None]
+            out.append({"text": f"{text} {nxt}", "confidence": min(confs) if confs else None})
+            i += 2
+            continue
+        out.append(lines[i])
+        i += 1
+    return out
+
+
 def extract_findings(lines: list[dict]) -> list[Finding]:
     findings: list[Finding] = []
     seen: set[str] = set()
-    for ln in lines:
+    for ln in _join_split_label_lines(lines):
         text = (ln.get("text") or "").strip()
         conf = ln.get("confidence")
         if not text:

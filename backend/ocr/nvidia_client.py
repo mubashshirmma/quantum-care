@@ -2,7 +2,10 @@
 
 Two deployment modes, both the same NVIDIA NIM OCR microservice API:
   hosted   NVIDIA API Catalog endpoint, needs NVIDIA_API_KEY (free key at https://build.nvidia.com)
-           default model: nvidia/nemoretriever-ocr-v1   (alt: baidu/paddleocr, set NVIDIA_OCR_MODEL)
+           default model: nvidia/nemotron-ocr-v2      (override with NVIDIA_OCR_MODEL)
+           Live alternatives on the same base: nvidia/nemotron-ocr-v1, nvidia/nemoretriever-ocr,
+           baidu/paddleocr.  NOTE: .../nemoretriever-ocr-v1 was retired by NVIDIA on 2026-05-18
+           and now answers HTTP 410 Gone — do not use it.
   local    self-hosted NIM container, set NVIDIA_OCR_URL, e.g. http://localhost:8010/v1/infer
            requires: NVIDIA GPU + driver, nvidia-container-toolkit, NGC API key to pull the container:
              docker run --gpus all -p 8010:8000 -e NGC_API_KEY nvcr.io/nim/nvidia/nemoretriever-ocr-v1:latest
@@ -20,7 +23,7 @@ from dataclasses import dataclass, field
 import httpx
 
 HOSTED_BASE = "https://ai.api.nvidia.com/v1/cv/"
-DEFAULT_MODEL = "nvidia/nemoretriever-ocr-v1"
+DEFAULT_MODEL = "nvidia/nemotron-ocr-v2"
 MAX_INLINE_BYTES = 180_000          # hosted endpoints accept ~180 KB inline images; larger need the NVCF asset API
 
 
@@ -93,6 +96,12 @@ class NvidiaOCRClient:
             raise NvidiaOCRError(f"NVIDIA OCR request failed: {e}") from e
         if r.status_code == 401:
             raise NvidiaOCRError("NVIDIA API rejected the key (401). Check NVIDIA_API_KEY.")
+        if r.status_code == 403:
+            raise NvidiaOCRError("NVIDIA API refused the key (403). The key is present but not authorised for "
+                                 f"'{self.model}'. Check the key at build.nvidia.com and that the model is enabled for it.")
+        if r.status_code == 410:
+            raise NvidiaOCRError(f"NVIDIA retired this endpoint (410 Gone): {url}. "
+                                 f"Set NVIDIA_OCR_MODEL to a current model id (e.g. '{DEFAULT_MODEL}' or 'baidu/paddleocr').")
         if r.status_code == 429:
             raise NvidiaOCRError("NVIDIA API rate limit reached (429). Try again shortly.")
         if r.status_code >= 400:
