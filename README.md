@@ -302,11 +302,20 @@ Three things make this work correctly:
 
 ### Quantum Circuit
 
-> **Circuit diagram will be added here.**
+![Hierarchical 4-qubit VQC — the four circuits executed sequentially for the Cleveland heart-disease model](docs/images/quantum_circuit_hierarchical.jpg)
 
-<!-- INSERT QUANTUM CIRCUIT IMAGE HERE -->
+*The real circuits for `quantum_hier` on the Cleveland dataset, rendered by the application under **Quantum Lab → Circuit** directly from the trained model — not a textbook drawing.*
 
-The live application also renders the real circuit for any trained model under **Quantum Lab → Circuit**, generated directly from the saved model. Here is the actual text output for Block A of the hierarchical model on the Cleveland dataset:
+**How to read it:**
+
+* **Four separate circuits, not one wide circuit.** Blocks A, B, C and D each use **4 qubits** and run **one after another**. The 13 clinical features are processed with a maximum of 4 qubits at any moment.
+* **`Ry(x_...)`** — the first column of every block is the **data**. Each patient measurement enters as a rotation angle: Block A carries `age, trestbps, chol, thalach`; Block B carries `oldpeak, ca, sex, cp`; Block C carries `fbs, restecg, exang, slope`.
+* **`Ry(θ_...)`** — the **trainable parameters**, the quantum equivalent of neural-network weights. Two layers per block, 8 parameters each.
+* **`■` connected to `X`** — the **CNOT chain** (control ■ → target X) running q0→q1→q2→q3. This is what entangles the qubits so the model can capture relationships *between* features.
+* **Block D is the decision block.** It receives the 13th feature (`thal`) plus **3 aggregated angles** carrying the measured outputs of blocks A, B and C. Its parity measurement produces the final class.
+
+<details>
+<summary>Text version of Block A (as printed by the API)</summary>
 
 ```text
 Block A  (4 qubits)  inputs: age, trestbps, chol, thalach
@@ -320,6 +329,7 @@ q_2: ┤ Ry(x_A[2]) ├┤ Ry(θ_A[2]) ├─────────┤ X ├�
 q_3: ┤ Ry(x_A[3]) ├┤ Ry(θ_A[3]) ├───────────────────────┤ X ├─────
      └────────────┘└────────────┘                       └───┘
 ```
+</details>
 
 #### The two gates we use, in plain language
 
