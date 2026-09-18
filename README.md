@@ -302,7 +302,7 @@ Three things make this work correctly:
 
 ### Quantum Circuit
 
-![Hierarchical 4-qubit VQC — the four circuits executed sequentially for the Cleveland heart-disease model](docs/images/quantum_circuit_hierarchical.jpg)
+![Hierarchical 4-qubit VQC — the four circuits executed sequentially for the Cleveland heart-disease model](quantum_circuit_hierarchical.jpg)
 
 *The real circuits for `quantum_hier` on the Cleveland dataset, rendered by the application under **Quantum Lab → Circuit** directly from the trained model — not a textbook drawing.*
 
