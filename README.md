@@ -5,7 +5,7 @@
 > **Smart India Hackathon — research prototype**
 > A working web application that trains **classical** and **quantum** machine-learning models on the **same medical dataset, the same split and the same preprocessing**, then uses the saved models to produce a risk prediction for a single patient.
 
-**Quantum Care is an honest side-by-side experiment.** Most "quantum ML" demos show only a quantum model. We run four classical models and four quantum models on identical data and publish whatever numbers come out — including the many cases where the classical model wins.
+**Quantum Care is an honest side by side experiment.** Most "quantum ML" demos show only a quantum model. We run four classical models and four quantum models on identical data and publish whatever numbers come out — including the many cases where the classical model wins.
 
 The platform is a **single Python process** that serves both the API and the web interface. A doctor or operator signs in, picks a disease, fills a patient form (or uploads a lab report for OCR), and receives a risk estimate from models that were trained earlier and saved to disk. Nothing is retrained at prediction time.
 
