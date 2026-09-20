@@ -1,8 +1,66 @@
+# Python virtual environment
 .venv/
+venv/
+env/
+
+# Python cache
 __pycache__/
-*.pyc
+*.py[cod]
+
+# Test / tooling cache
 .pytest_cache/
-saved_models/**/*.joblib
-data/
+.mypy_cache/
+.ruff_cache/
+
+# Environment variables / secrets
 .env
-.env.example
+.env.*
+!.env.example
+
+# Local data and databases.
+# data/ holds app.db (patient records) and .secret (the session-signing key used
+# by backend/core/security.py). Never commit either. backend/core/db.py recreates
+# this directory on startup, so ignoring it is safe.
+data/
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE settings
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Project-specific leftovers.
+# picturesm/ duplicates docs/screenshots/ (the originals with scrambled names).
+# download is the original dashboard screenshot, now docs/screenshots/dashboard.png.
+picturesm/
+download
+quantumcare-changes-*.zip
+
+# Self-contained README copy: ~2.8 MB of base64-embedded images, for copying to
+# another machine. Regenerate locally instead of committing it.
+README-portable.md
+
+# ---------------------------------------------------------------------------
+# DO NOT ignore saved_models/
+# The 32 *.joblib pipelines are required at runtime: backend/prediction/predictor.py
+# loads both the .joblib and metadata.json for every prediction. Ignoring the
+# weights while committing the metadata makes every prediction fail.
+#
+# Also keep: docs/ (README screenshots), datasets/ (incl. registry.json),
+# frontend/, backend/, scripts/, tests/, Dockerfile, .dockerignore
+# ---------------------------------------------------------------------------
