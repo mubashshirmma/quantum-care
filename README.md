@@ -495,59 +495,61 @@ flowchart TB
 
 Landing view: patient/analysis/model counts, the diseases that have trained models, recent analyses, the pipeline summary and the medical-safety notice.
 
-![Dashboard](docs/screenshots/dashboard.png)
+![Dashboard](pictures/DASHBOARD.png)
 
 ### 2. Patient Analysis — input form
 
 Step 1 — patient and disease selection:
 
-![Patient Analysis — patient and disease step](docs/screenshots/patient-analysis-step1.png)
+![registration_new_patients](pictures/REGISTRATION.png)
+
+![Patient Analysis — patient and disease step](pictures/SELECTED_DATASET.png)
 
 Choosing the disease (each disease has its own feature schema and its own trained models):
 
-![Patient Analysis — disease picker](docs/screenshots/patient-analysis-disease-picker.png)
+![Patient Analysis — disease picker](pictures/DATASET.png)
 
 Step 2 — the disease-specific feature form, with the training-data range shown under every field:
 
-![Patient Analysis — feature form](docs/screenshots/patient-analysis-form.png)
+![Patient Analysis — feature form](pictures/DATA_ENTRY.png)
 
 ### 3. Data Upload / Dataset Explorer
 
 The four ways a patient record can enter the system — new patient, existing patient, manual entry and NVIDIA OCR — together with the datasets that have trained models:
 
-![Patient Analysis — data entry modes and available datasets](docs/screenshots/patient-analysis-entry-modes.png)
+
 
 Step 3 — picking the trained model to run (the saved model is reused; nothing is retrained):
 
-![Patient Analysis — trained model selection](docs/screenshots/patient-analysis-model-select.png)
+![Patient Analysis — trained model selection](pictures/MODELS_OVERVIEW.png)
 
 ### 4. Benchmark — Classical vs Quantum
 
 All eight models on the identical stratified split, seed and preprocessing, with accuracy, precision, recall, specificity, F1, ROC-AUC, train time and inference cost per sample:
 
-![Benchmark — classical vs quantum](docs/screenshots/benchmark-classical-vs-quantum.png)
+![Benchmark — classical vs quantum](pictures/BENCHMARK.png)
 
 ### 5. Quantum Lab — Circuit view
 
 The hierarchical 4-qubit VQC, showing the four blocks that are executed sequentially for the Cleveland heart-disease model:
 
-![Quantum Lab — hierarchical 4-qubit VQC circuits](docs/images/quantum_circuit_hierarchical.png)
+![Quantum Lab — hierarchical 4-qubit VQC circuits](pictures/quantum_circuit_hierarchical.png)
 
 ### 6. Prediction Result
 
 The headline prediction with its decision margin and risk band, the per-model score table with hold-out validation accuracy/AUC, the explanation panel and the exact inputs used:
 
-![Prediction result](docs/screenshots/prediction-result.png)
+![Prediction result](pictures/FULL_ANALYSIS.png)
 
 ### 7. NVIDIA OCR document intake
 
 Step 2 — uploading a medical report (JPG, PNG or PDF), with manual transcription as the fallback path:
 
-![NVIDIA OCR — document upload](docs/screenshots/nvidia-ocr-upload.png)
+![NVIDIA OCR — document upload](pictures/NVIDIA_OCR_(2).png)
 
 Step 3 — human verification: the OCR output with per-line confidence on the left, and the extracted values mapped onto the disease feature schema on the right. Only confirmed data reaches the trained model:
 
-![NVIDIA OCR — human verification](docs/screenshots/nvidia-ocr-verification.png)
+![NVIDIA OCR — human verification](pictures/NVIDIA_OCR_(1).png)
 
 ---
 
