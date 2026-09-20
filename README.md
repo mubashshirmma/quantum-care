@@ -24,7 +24,7 @@ All quantum computation runs on an **exact, noiseless simulator on a normal lapt
 | 3 | [Key Features](#3--key-features) | 13 | [Running the Application](#13--running-the-application) |
 | 4 | [How the Application Works](#4--how-the-application-works) | 14 | [Current Implementation](#14--current-implementation) |
 | 5 | [System Architecture](#5--system-architecture) | 15 | [Results / Evaluation](#15--results--evaluation) |
-| 6 | [Quantum Machine Learning](#6--quantum-machine-learning) | 16 | [Limitations](#16--limitations) |
+| 6 | [Quantum ML and Circuits](#quantum-ml-and-circuits) | 16 | [Limitations](#16--limitations) |
 | 7 | [Classical ML vs Quantum ML](#7--classical-ml-vs-quantum-ml) | 17 | [Future Scope](#17--future-scope) |
 | 8 | [Data Pipeline](#8--data-pipeline) | 18 | [Why This Approach](#18--why-this-approach) |
 | 9 | [Application Screenshots](#9--application-screenshots) | 19 | [Healthcare Disclaimer](#19--healthcare-disclaimer) |
@@ -82,15 +82,15 @@ Two workflows sit side by side in the same application:
 
 | | Feature | What it does |
 |---|---|---|
-| ⚖️ 1. | **Fair 8-model benchmark** | 4 classical + 4 quantum models, identical split, identical preprocessing, identical metrics. |
-| ⚛️ 2. | **Four different quantum models** | Not one token circuit — a VQC, a quantum-kernel SVM, a hierarchical block model, and a data re-uploading model. |
-| 🔒 3. | **Leakage-safe by construction** | Preprocessing lives *inside* the scikit-learn Pipeline, so it can only ever be fitted on training data. |
-| 💨 4. | **Custom fast simulator** | A vectorised statevector engine for RY/CX circuits, verified equal to Qiskit's own simulator to **1e-10**. |
-| 📄 5. | **NVIDIA OCR intake** | Upload a lab report (JPG/PNG/PDF); values are extracted and mapped onto the model's input fields for human confirmation. |
-| 👤 6. | **Patient records + email OTP** | Patients are registered once with a verified email, then reused across many analyses. |
-| 🧠 7. | **Honest explainability** | Exact per-patient contributions where the model supports it, and an explicit "not available" where it does not. |
-| 📚 8. | **Password-protected formula section** | Every formula used in the project, tagged *implemented* or *theoretical*, with a worked example on real saved numbers. |
-| 🧪 9. | **53 automated tests** | Including a test that the quantum simulator matches Qiskit, and that analytic gradients match finite differences. |
+| ⚖️ | **Fair 8-model benchmark** | 4 classical + 4 quantum models, identical split, identical preprocessing, identical metrics. |
+| ⚛️ | **Four different quantum models** | Not one token circuit — a VQC, a quantum-kernel SVM, a hierarchical block model, and a data re-uploading model. |
+| 🔒 | **Leakage-safe by construction** | Preprocessing lives *inside* the scikit-learn Pipeline, so it can only ever be fitted on training data. |
+| 🚀 | **Custom fast simulator** | A vectorised statevector engine for RY/CX circuits, verified equal to Qiskit's own simulator to **1e-10**. |
+| 📄 | **NVIDIA OCR intake** | Upload a lab report (JPG/PNG/PDF); values are extracted and mapped onto the model's input fields for human confirmation. |
+| 👤 | **Patient records + email OTP** | Patients are registered once with a verified email, then reused across many analyses. |
+| 🧠 | **Honest explainability** | Exact per-patient contributions where the model supports it, and an explicit "not available" where it does not. |
+| 📚 | **Password-protected formula section** | Every formula used in the project, tagged *implemented* or *theoretical*, with a worked example on real saved numbers. |
+| 🧪 | **53 automated tests** | Including a test that the quantum simulator matches Qiskit, and that analytic gradients match finite differences. |
 
 ---
 
@@ -268,6 +268,8 @@ flowchart TB
 
 ---
 
+<a id="quantum-ml-and-circuits"></a>
+
 ## 6 · Quantum Machine Learning ⚛️
 
 ### Why quantum ML?
@@ -302,7 +304,7 @@ Three things make this work correctly:
 
 ### Quantum Circuit
 
-![Hierarchical 4-qubit VQC — the four circuits executed sequentially for the Cleveland heart-disease model](quantum_circuit_hierarchical.jpg)
+![Hierarchical 4-qubit VQC — the four circuits executed sequentially for the Cleveland heart-disease model](docs/images/quantum_circuit_hierarchical.png)
 
 *The real circuits for `quantum_hier` on the Cleveland dataset, rendered by the application under **Quantum Lab → Circuit** directly from the trained model — not a textbook drawing.*
 
@@ -491,31 +493,61 @@ flowchart TB
 
 ### 1. Dashboard
 
-<!-- INSERT DASHBOARD SCREENSHOT HERE -->
+Landing view: patient/analysis/model counts, the diseases that have trained models, recent analyses, the pipeline summary and the medical-safety notice.
+
+![Dashboard](docs/screenshots/dashboard.png)
 
 ### 2. Patient Analysis — input form
 
-<!-- INSERT PATIENT ANALYSIS FORM SCREENSHOT HERE -->
+Step 1 — patient and disease selection:
+
+![Patient Analysis — patient and disease step](docs/screenshots/patient-analysis-step1.png)
+
+Choosing the disease (each disease has its own feature schema and its own trained models):
+
+![Patient Analysis — disease picker](docs/screenshots/patient-analysis-disease-picker.png)
+
+Step 2 — the disease-specific feature form, with the training-data range shown under every field:
+
+![Patient Analysis — feature form](docs/screenshots/patient-analysis-form.png)
 
 ### 3. Data Upload / Dataset Explorer
 
-<!-- INSERT DATA UPLOAD SCREENSHOT HERE -->
+The four ways a patient record can enter the system — new patient, existing patient, manual entry and NVIDIA OCR — together with the datasets that have trained models:
+
+![Patient Analysis — data entry modes and available datasets](docs/screenshots/patient-analysis-entry-modes.png)
+
+Step 3 — picking the trained model to run (the saved model is reused; nothing is retrained):
+
+![Patient Analysis — trained model selection](docs/screenshots/patient-analysis-model-select.png)
 
 ### 4. Benchmark — Classical vs Quantum
 
-<!-- INSERT BENCHMARK SCREENSHOT HERE -->
+All eight models on the identical stratified split, seed and preprocessing, with accuracy, precision, recall, specificity, F1, ROC-AUC, train time and inference cost per sample:
+
+![Benchmark — classical vs quantum](docs/screenshots/benchmark-classical-vs-quantum.png)
 
 ### 5. Quantum Lab — Circuit view
 
-<!-- INSERT QUANTUM LAB SCREENSHOT HERE -->
+The hierarchical 4-qubit VQC, showing the four blocks that are executed sequentially for the Cleveland heart-disease model:
+
+![Quantum Lab — hierarchical 4-qubit VQC circuits](docs/images/quantum_circuit_hierarchical.png)
 
 ### 6. Prediction Result
 
-<!-- INSERT PREDICTION RESULT SCREENSHOT HERE -->
+The headline prediction with its decision margin and risk band, the per-model score table with hold-out validation accuracy/AUC, the explanation panel and the exact inputs used:
+
+![Prediction result](docs/screenshots/prediction-result.png)
 
 ### 7. NVIDIA OCR document intake
 
-<!-- INSERT OCR SCREENSHOT HERE -->
+Step 2 — uploading a medical report (JPG, PNG or PDF), with manual transcription as the fallback path:
+
+![NVIDIA OCR — document upload](docs/screenshots/nvidia-ocr-upload.png)
+
+Step 3 — human verification: the OCR output with per-line confidence on the left, and the extracted values mapped onto the disease feature schema on the right. Only confirmed data reaches the trained model:
+
+![NVIDIA OCR — human verification](docs/screenshots/nvidia-ocr-verification.png)
 
 ---
 
