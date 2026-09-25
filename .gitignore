@@ -47,7 +47,7 @@ Thumbs.db
 # Project-specific leftovers.
 # picturesm/ duplicates docs/screenshots/ (the originals with scrambled names).
 # download is the original dashboard screenshot, now docs/screenshots/dashboard.png.
-picturesm/
+pictures/
 download
 quantumcare-changes-*.zip
 
